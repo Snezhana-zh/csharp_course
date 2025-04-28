@@ -12,8 +12,12 @@ public class Payments
 {
     public static decimal CalculateTotalPayments(PaymentsPlan plan, decimal rate, int monthsCount, decimal amount)
     {
-        if (monthsCount <= 0 || amount <= 0 || rate < 0)
-            throw new ArgumentException("Invalid parameters");
+        if (monthsCount <= 0)
+            throw new ArgumentException($"Invalid monthsCount = {monthsCount}");
+        if (amount <= 0)
+            throw new ArgumentException($"Invalid amount = {amount}");
+        if (rate < 0)
+            throw new ArgumentException($"Invalid rate = {rate}");
         
         return plan switch
         {
@@ -39,11 +43,20 @@ public class Payments
     {
         if (rate == 0)
             return amount;
-            
-        decimal annuityCoefficient = rate * (decimal)Math.Pow(1 + (double)rate, monthsCount) / 
-                                     ((decimal)Math.Pow(1 + (double)rate, monthsCount) - 1);
         
-        decimal monthlyPayment = amount * annuityCoefficient;
-        return Math.Round(monthlyPayment * monthsCount, 2);
+        decimal annuityCoefficient = rate * (decimal)(Math.Pow(1 + (double)rate, monthsCount) /
+                                     (Math.Pow(1 + (double)rate, monthsCount) - 1));
+
+        var remainderDebt = amount;
+        decimal totalPercent = 0;
+        decimal monthlyPayment = Math.Round(amount * annuityCoefficient, 2);
+
+        for (int i = 0; i < monthsCount; i++)
+        {
+            totalPercent += (decimal)Math.Round((double)(rate * remainderDebt), 2);
+            remainderDebt -= (decimal)Math.Round((double)(monthlyPayment - rate * remainderDebt), 2);
+        }
+        
+        return (decimal)Math.Round((double)(amount + totalPercent), 2);
     }
 }
