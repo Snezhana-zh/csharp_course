@@ -8,8 +8,10 @@ public static class Rectangles
         // второй прямоугольник
         int x3, int y3, int x4, int y4)
     {
-        //TODO напишите тут свое решение
-        throw new NotImplementedException();
+        bool xCheck = (x3 <= x2) && (x4 >= x1);
+        bool yCheck = (y3 <= y2) && (y4 >= y1);
+        
+        return xCheck && yCheck;
     }
     
     public static bool IsNested(
@@ -18,7 +20,9 @@ public static class Rectangles
         // второй прямоугольник
         int x3, int y3, int x4, int y4)
     {
-        //TODO напишите тут свое решение
-        throw new NotImplementedException();
+        bool xCheck = (x3 >= x1) && (x4 <= x2);
+        bool yCheck = (y3 >= y1) && (y4 <= y2);
+        
+        return xCheck && yCheck;
     }
 }
