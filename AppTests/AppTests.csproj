@@ -25,4 +25,8 @@
       <ProjectReference Include="..\App\App.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Practice3\" />
+    </ItemGroup>
+
 </Project>
