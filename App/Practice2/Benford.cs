@@ -11,8 +11,12 @@ public static class Benford
         {
             if (startWord && Char.IsLetterOrDigit(c))
             {
-                if (Char.IsDigit(c) && c != '0') statistics[(int)Char.GetNumericValue(c) - 1]++;
                 startWord = false;
+                if (Char.IsDigit(c))
+                {
+                    if (c != '0') statistics[(int)Char.GetNumericValue(c) - 1]++;
+                    else startWord = true;
+                }
             }
             else if (!startWord && !Char.IsLetterOrDigit(c)) startWord = true;
         }
