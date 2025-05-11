@@ -6,26 +6,28 @@ public static class Requisites
 {
     public static bool IsValidInn(string inn) 
     {
-        if (inn.Length == 10) throw new ArgumentException("inn must be for ИП/ФЛ");
+        if (inn.Length == 10) return false;
         if (inn.Length != 12) return false;
         
-        var weights = new[] { 7, 2, 4, 10, 3, 5, 9, 4, 6, 8 };
-        int control1 = (GetDotProduct(inn, weights) % 11) % 10;
-        if (control1 != (inn[10] - '0')) return false;
+        var innArray = inn.Select(c => int.Parse(c.ToString())).ToArray();
         
-        var weights2 = new[] { 3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8 };
-        int control2 = (GetDotProduct(inn, weights2) % 11) % 10;
-        if (control2 != (inn[11] - '0')) return false;
+        var firstControlDigitWeights = new[] { 7, 2, 4, 10, 3, 5, 9, 4, 6, 8 };
+        var firstCheck = (GetDotProduct(innArray, firstControlDigitWeights) % 11) % 10;
+        if (firstCheck != innArray[10]) return false;
+        
+        var secondControlDigitWeights = new[] { 3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8 };
+        var secondCheck = (GetDotProduct(innArray, secondControlDigitWeights) % 11) % 10;
+        if (secondCheck != innArray[11]) return false;
         
         return true;
     }
 
-    private static int GetDotProduct(string inn, int[] weights)
+    private static int GetDotProduct(int[] inn, int[] weights)
     {
-        int total = 0;
+        var total = 0;
         for (int i = 0; i < weights.Length; i++)
         {
-            total += (inn[i] - '0') * weights[i];
+            total += inn[i] * weights[i];
         }
         return total;
     }
