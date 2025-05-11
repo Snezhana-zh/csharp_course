@@ -4,21 +4,19 @@ public static class Benford
 {
     public static int[] GetBenfordStatistics(string text)
     {
-        var statistics = new int[10];
-        
-        string[] words = text.Split(' ');
-        foreach (var word in words)
+        var statistics = new int[9];
+        var startWord = true;
+
+        foreach (var c in text)
         {
-            if (int.TryParse(word, out int number))
+            if (startWord && Char.IsLetterOrDigit(c))
             {
-                var numAbs = Math.Abs(number);
-                while (numAbs >= 10)
-                {
-                    numAbs /= 10;
-                }
-                statistics[numAbs]++;
+                if (Char.IsDigit(c) && c != '0') statistics[(int)Char.GetNumericValue(c) - 1]++;
+                startWord = false;
             }
+            else if (!startWord && !Char.IsLetterOrDigit(c)) startWord = true;
         }
+        
         return statistics;
     }
 }
