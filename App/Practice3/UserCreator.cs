@@ -11,15 +11,15 @@ public static class UserCreator
     }
     private static string ComputeHash(string password)
     {
-        using (MD5 md5 = MD5.Create())
+        using (var md5 = MD5.Create())
         {
-            byte[] inputBytes = Encoding.UTF8.GetBytes(password);
-            byte[] hashBytes = md5.ComputeHash(inputBytes);
+            var inputBytes = Encoding.UTF8.GetBytes(password);
+            var hashBytes = md5.ComputeHash(inputBytes);
 
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < hashBytes.Length; i++)
+            var sb = new StringBuilder();
+            foreach (var hashByte in hashBytes)
             {
-                sb.Append(hashBytes[i].ToString("x2"));
+                sb.Append(hashByte.ToString("x2"));
             }
             return sb.ToString();
         }

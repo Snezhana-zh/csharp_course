@@ -3,54 +3,53 @@ using System.Text.RegularExpressions;
 
 public class User
 {
-    private readonly Guid id;
-    private readonly string login;
-    private string passwordHash;
-    private string name;
-    private string surname;
-    private readonly string inn;
-    private string phone;
-    private DateTime registerDate;
+    private readonly Guid _id;
+    private readonly string _login;
+    private string _passwordHash;
+    private string _name;
+    private string _surname;
+    private readonly string _inn;
+    private string _phone;
+    private readonly DateTime _registerDate;
     
-    public Guid Id { get => id; init => id = value; }
-    public string Login { get => login; init => login = value; }
-    public string PasswordHash { get => passwordHash; set => passwordHash = value; }
-    public string Name { get => name; set => name = value; }
-    public string Surname { get => surname; set => surname = value; }
-    public string Inn { get => inn; init => inn = value; }
-    public DateTime RegisterDate { get => registerDate; init => registerDate = value; }
+    private static readonly Regex PhoneRegex =
+        new Regex(@"(8|\+7|7)+[\s-\(]*(9\d{2})[\s-\)]*\d{3}[\s-]*\d{2}[\s-]*\d{2}", RegexOptions.Compiled);
+    
+    public Guid Id { get => _id; init => _id = value; }
+    public string Login { get => _login; init => _login = value; }
+    public string PasswordHash { get => _passwordHash; set => _passwordHash = value; }
+    public string Name { get => _name; set => _name = value; }
+    public string Surname { get => _surname; set => _surname = value; }
+    public string Inn { get => _inn; init => _inn = value; }
+    public DateTime RegisterDate { get => _registerDate; init => _registerDate = value; }
 
     public string Phone
     {
-        get => phone;
-        set
-        {
-            if (!TryUpdatePhone(value)) throw new ArgumentException("Invalid phone number");
-        }
+        get => _phone;
+        set => TryUpdatePhone(value);
     }
     public User()
     {
-        id = Guid.NewGuid();
-        registerDate = DateTime.Now;
+        _id = Guid.NewGuid();
+        _registerDate = DateTime.Now;
     }
     public User(string login, string passwordHash, string name, string surname, string inn, string phone) : this()
     {
-        this.login = login;
-        this.passwordHash = passwordHash;
-        this.name = name;
-        this.surname = surname;
-        this.inn = inn;
-        _ =  TryParsePhone(phone, out this.phone);
+        _login = login;
+        _passwordHash = passwordHash;
+        _name = name;
+        _surname = surname;
+        _inn = inn;
+        Phone = phone;
     }
     public string GetUserFullName()
     {
-        return name + " " + surname;
+        return _name + " " + _surname;
     }
-    private static bool TryParsePhone(string inputString, out string parsedPhone)
+    private static bool TryParsePhone(string inputString, out string parsedPhone) 
     {
         parsedPhone = null;
-        var phonePattern = @"(?<!\+)(8|\+7|7)+[\s-\(]*(9\d{2})[\s-\)]*\d{3}[\s-]*\d{2}[\s-]*\d{2}";
-        var match = Regex.Match(inputString, phonePattern);
+        var match = PhoneRegex.Match(inputString);
         if (!match.Success) return false;
         
         var digits = new String(match.Value.Where(char.IsDigit).ToArray());
@@ -63,12 +62,11 @@ public class User
         }
         return false;
     }
-
     private bool TryUpdatePhone(string phone)
     {
         var isValidPhone =  TryParsePhone(phone, out string validPhone);
         if (!isValidPhone) return false;
-        this.phone = validPhone;
+        _phone = validPhone;
         return true;
     }
 }
