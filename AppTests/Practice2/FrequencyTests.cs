@@ -5,7 +5,7 @@ namespace AppTests.Practice2;
 public class FrequencyTests
 {
     [Test]
-    public void TestPasses_When_Result_Correct()
+    public void TestPasses_When_Return_Correct_Frequencies()
     {
         string input = "a b c d. b c d. e b c a d.";
         var expectedResult = new Dictionary<string, string>
@@ -23,7 +23,7 @@ public class FrequencyTests
         Assert.That(result, Is.EqualTo(expectedResult));
     }
     [Test]
-    public void TestPasses_When_Result_Correct_Empty()
+    public void TestPasses_When_Resulting_Dictionary_Empty()
     {
         string input = "a.";
         var expectedResult = new Dictionary<string, string>();
@@ -31,17 +31,20 @@ public class FrequencyTests
         Assert.That(result, Is.EqualTo(expectedResult));
     }
     [Test]
-    public void TestPasses_When_Result_Correct_Words()
+    public void TestPasses_When_Return_Correct_Frequencies_With_Other_Separators()
     {
-        string input = "She stood up. Then she left.";
+        string input = "She, stood\tup\nthen she left.";
         var expectedResult = new Dictionary<string, string>
         {
             { "She", "stood" },
             { "stood", "up" },
-            { "Then", "she" },
+            { "up", "then" },
+            { "then", "she" },
             { "she", "left" },
             { "She stood", "up" },
-            { "Then she", "left" }
+            { "stood up", "then" },
+            { "then she", "left" },
+            { "up then", "she"}
         };
         var result = Frequency.FrequencyAnalysis(input);
         Assert.That(result, Is.EqualTo(expectedResult));
