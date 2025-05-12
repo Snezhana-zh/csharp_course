@@ -13,7 +13,7 @@ public static class StackMachine
             {
                 result.Append(codeLine.Substring("push".Length + 1));
             }
-            else if (codeLine.StartsWith("pop"))
+            else
             {
                 if (int.TryParse(codeLine.Substring("pop".Length), out var resultInt))
                 {

@@ -29,7 +29,7 @@ public class StackMachineTests
         "push Привет ",
         "push !"
     }, "Привет !")]
-    public void TestPasses_When_Result_Correct(string[] lines, string expected)
+    public void TestPasses_When_StackMachine_Return_Correct_String(string[] lines, string expected)
     {
         var actual = StackMachine.CalculateString(lines);
         Assert.That(actual, Is.EqualTo(expected));
