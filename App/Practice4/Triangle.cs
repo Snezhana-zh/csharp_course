@@ -9,11 +9,13 @@ public sealed class Triangle : Polygon
 
     protected override bool IsValidPolygon()
     {
-        var a = GetDistance(Vertices[0], Vertices[1]);  
+        var a = GetDistance(Vertices[0], Vertices[1]);
         var b = GetDistance(Vertices[1], Vertices[2]);
         var c = GetDistance(Vertices[0], Vertices[2]);
         return (a + b >= c) && (a + c >= b) && (b + c >= a) 
-               && !a.Equals(b) && !a.Equals(c) && !b.Equals(c);
+               && !Vertices[0].Equals(Vertices[1]) 
+               && !Vertices[0].Equals(Vertices[2]) 
+               && !Vertices[1].Equals(Vertices[2]);
     }
     
     public override double CalculateArea()

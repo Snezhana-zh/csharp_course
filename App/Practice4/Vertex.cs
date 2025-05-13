@@ -17,4 +17,8 @@ public class Vertex : I2DVertex
         return Math.Abs(X - other.X) < Tolerance && 
                Math.Abs(Y - other.Y) < Tolerance;
     }
+    public override string ToString()
+    {
+        return $"(x = {X:F3}, y = {Y:F3})";
+    }
 }
