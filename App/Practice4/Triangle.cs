@@ -13,7 +13,9 @@ public sealed class Triangle : Polygon
         var b = GetDistance(Vertices[1], Vertices[2]);
         var c = GetDistance(Vertices[0], Vertices[2]);
         return (a + b >= c) && (a + c >= b) && (b + c >= a) 
-               && !a.Equals(b) && !a.Equals(c) && !b.Equals(c);
+               && !Vertices[0].IsEqual(Vertices[1]) 
+               && !Vertices[0].IsEqual(Vertices[2]) 
+               && !Vertices[1].IsEqual(Vertices[2]);
     }
     
     public override double CalculateArea()
